@@ -25,19 +25,15 @@ class MyAppState extends State<MyApp> {
     var value=numberParts.toDouble();
     return MaterialApp(
       title:'PizzaCutter',
-      theme:ThemeData(
-        primarySwatch:Colors.red,),
-      home:Scaffold(
-        appBar:AppBar(
-          title:Text("PizzaCutter"),),
+      theme:ThemeData(primarySwatch:Colors.red,),
+      home:Scaffold(appBar:AppBar(title:Text("PizzaCutter"),),
         body:Align(
           alignment:Alignment.topCenter,
           child:Container(
             child:Column(children:<Widget>[
               Camera(numberParts,frozen),
               Slider(value:value,onChanged:(change){setState((){numberParts=change.toInt();});},min:2,max:15,divisions:13,label:value.toString()),
-              Expanded(
-                  child:Align(
+              Expanded(child:Align(
                       alignment:Alignment.center,
                       child:InkResponse(
                         highlightShape:BoxShape.circle,
@@ -56,13 +52,12 @@ class Camera extends StatefulWidget{
 class _Camera extends State<Camera>{
   CameraController controller;
   double scale=1.0;
-  var oldScale=1.0;
+  var oldScale;
   bool firstUpdate=false;
-  double firstScale=1.0;
+  double firstScale;
   CameraImage lastImage;
   int id;
-  Future<void> freezeFrame(int id)async{
-    await controller.takePicture(tempPath+"/"+id.toString());}
+  Future<void> freezeFrame(int id)async=>await controller.takePicture(tempPath+"/"+id.toString());
   @override
   void initState(){
     super.initState();
