@@ -118,11 +118,11 @@ class CirclePainter extends CustomPainter{
     ..color=Colors.white
     ..strokeCap=StrokeCap.round
     ..style=PaintingStyle.stroke
-    ..strokeWidth=5.0;
+    ..strokeWidth=5;
     canvas.drawCircle(Offset.zero,radius*scale,paint);
     for(var i=0;i<numberParts;i++){canvas.drawLine(Offset.zero,Offset.fromDirection((((i+1)/numberParts)*2*pi)-(1/2)*pi,radius*scale),paint);}
     paint.color=Colors.black;
-    paint.strokeWidth=2.0;
+    paint.strokeWidth=2;
     canvas.drawCircle(Offset.zero,radius*scale+4.5,paint);}
   @override
   bool shouldRepaint(CustomPainter oldDelegate){return true;}
