@@ -18,11 +18,11 @@ class MyApp extends StatefulWidget {
     MyAppState createState() {
     return new MyAppState();}}
 class MyAppState extends State<MyApp> {
-  var numberParts=4;
+  var nbPart=4;
   var frozen=false;
   @override
     Widget build(BuildContext context){
-    var value=numberParts.toDouble();
+    var value=nbPart.toDouble();
     return MaterialApp(
       title:'PizzaCutter',
       theme:ThemeData(primarySwatch:Colors.red),
@@ -31,8 +31,8 @@ class MyAppState extends State<MyApp> {
           alignment:Alignment.topCenter,
           child:Container(
             child:Column(children:<Widget>[
-              Camera(numberParts,frozen),
-              Slider(value:value,onChanged:(change){setState((){numberParts=change.toInt();});},min:2,max:15,divisions:13,label:value.toString()),
+              Camera(nbPart,frozen),
+              Slider(value:value,onChanged:(change){setState((){nbPart=change.toInt();});},min:2,max:16,divisions:14,label:nbPart.toString()),
               Expanded(child:Align(
                       alignment:Alignment.center,
                       child:InkResponse(
@@ -51,10 +51,10 @@ class Camera extends StatefulWidget{
   _Camera createState()=>_Camera();}
 class _Camera extends State<Camera>{
   CameraController controller;
-  double scale=1.0;
-  var oldScale;
-  bool firstUpdate=false;
-  double firstScale;
+  double scl=1.0;
+  var oldScl;
+  bool frstUpd=false;
+  double frstScl;
   CameraImage lastImage;
   int id;
   Future<void> freezeFrame(int id)async=>await controller.takePicture(tempPath+"/"+id.toString());
@@ -92,23 +92,22 @@ class _Camera extends State<Camera>{
         widgets.add(
             CameraPreview(controller));}
       widgets.add(GestureDetector(
-        onScaleStart:(ScaleStartDetails details)=>firstUpdate=true,
-        onScaleEnd:(ScaleEndDetails details)=>oldScale=scale,
+        onScaleStart:(ScaleStartDetails details)=>frstUpd=true,
+        onScaleEnd:(ScaleEndDetails details)=>oldScl=scl,
         onScaleUpdate:(ScaleUpdateDetails details){
-          if(firstUpdate){
-            firstScale=details.scale;
-            firstUpdate=false;}
-          var futureScale=((details.scale/firstScale)-1)+oldScale;
-          if(futureScale<=1.786&&futureScale>0.1){
-            setState(()=>scale=futureScale);}},
+          if(frstUpd){
+            frstScl=details.scale;
+            frstUpd=false;}
+          var futureScale=((details.scale/frstScl)-1)+oldScl;
+          if(futureScale<=1.78&&futureScale>.1){setState(()=>scl=futureScale);}},
         behavior:HitTestBehavior.translucent,
         child:Center(
           child:CustomPaint(
-            painter:CirclePainter(widget.numberParts,scale)))));
+            painter:CrlcPaint(widget.numberParts,scl)))));
       return AspectRatio(
         aspectRatio:controller.value.aspectRatio,
         child:Stack(children:widgets,fit:StackFit.expand),);}}
-class CirclePainter extends CustomPainter{
+class CrlcPaint extends CustomPainter{
   var numberParts;
   double radius=150;
   double scale;
@@ -126,4 +125,4 @@ class CirclePainter extends CustomPainter{
     canvas.drawCircle(Offset.zero,radius*scale+4.5,paint);}
   @override
   bool shouldRepaint(CustomPainter oldDelegate){return true;}
-  CirclePainter(this.numberParts,[this.scale]);}
+  CrlcPaint(this.numberParts,[this.scale]);}
