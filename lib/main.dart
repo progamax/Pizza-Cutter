@@ -12,14 +12,11 @@ Future<void> main() async{
   cameras = await availableCameras();
   tempDir = await getTemporaryDirectory();
   tempPath = tempDir.path;
-  runApp(MyApp());
-}
+  runApp(MyApp());}
 class MyApp extends StatefulWidget {
   @override
     MyAppState createState() {
-    return new MyAppState();
-  }
-}
+    return new MyAppState();}}
 class MyAppState extends State<MyApp> {
   var numberParts = 4;
   var frozen = false;
@@ -28,12 +25,10 @@ class MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.red,
-      ),
+        primarySwatch: Colors.red,),
       home: Scaffold(
         appBar: AppBar(
-          title: Text("AppTestCut"),
-        ),
+          title: Text("AppTestCut"),),
         body: Align(
           alignment: Alignment.topCenter,
           child: Container(
@@ -41,9 +36,7 @@ class MyAppState extends State<MyApp> {
               CameraWidget(numberParts, frozen),
               SliderContainer((change){
                 setState(() {
-                  numberParts = change.toInt();
-                });
-              },numberParts.toDouble()),
+                  numberParts = change.toInt();});},numberParts.toDouble()),
               Expanded(
                   child: Align(
                       alignment: Alignment.center,
@@ -57,29 +50,14 @@ class MyAppState extends State<MyApp> {
                             iconSize: 124.0,
                             onPressed: (){
                               setState(() {
-                                if(!frozen){
-                                  frozen = true;
-                                }else{
-                                  frozen = false;
-                                }
-                              });
-                            },
-                            icon: Icon(Icons.pause)),
-                      )))
-            ],),
-          ),
-        )
-      )
-    );
-  }
-}
+                                frozen = !frozen;});},
+                            icon: Icon(Icons.pause)),)))],),),)));}}
 class CameraWidget extends StatefulWidget {
   final int numberParts;
   final bool frozen;
   CameraWidget(this.numberParts, this.frozen);
   @override
-  _CameraWidgetState createState() => _CameraWidgetState();
-}
+  _CameraWidgetState createState() => _CameraWidgetState();}
 class _CameraWidgetState extends State<CameraWidget>{
   CameraController controller;
   double scale = 1.0;
@@ -96,18 +74,12 @@ class _CameraWidgetState extends State<CameraWidget>{
     id = (Random().nextDouble() * 10000).toInt();
     controller = CameraController(cameras[0], ResolutionPreset.medium);
     controller.initialize().then((_){
-      if(!mounted) {
-        return;
-      }
-      setState(() {
-      });
-    });
-  }
+      if(!mounted) {return;}
+      setState(() {});});}
   @override
   void dispose() {
     controller?.dispose();
-    super.dispose();
-  }
+    super.dispose();}
   @override
   void didUpdateWidget(CameraWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -115,18 +87,13 @@ class _CameraWidgetState extends State<CameraWidget>{
       try{
         File(tempPath + "/" +id.toString()).delete();
       }catch(e){
-        print(e);
-      }
+        print(e);}
       setState(() {
-        id = (Random().nextDouble() * 10000).toInt();
-      });
-    }
-  }
+        id = (Random().nextDouble() * 10000).toInt();});}}
   @override
   Widget build(BuildContext context) {
     if(!controller.value.isInitialized){
-      return Container();
-    }
+      return Container();}
     var widgets = <Widget>[];
     if(widget.frozen && needNewStream){
       print("WIDGET FROZE");
@@ -139,10 +106,7 @@ class _CameraWidgetState extends State<CameraWidget>{
             return Image.file(File(tempPath+ "/"  + id.toString()));
           }else{
             return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-      }));
+              child: CircularProgressIndicator(),);}}));
     }else if(widget.frozen && !needNewStream){
       print(id.toString());
       print("ALREADY FROZEN BUILD");
@@ -150,56 +114,40 @@ class _CameraWidgetState extends State<CameraWidget>{
     }else{
       print(Directory(tempPath).listSync());
       widgets.add(
-          CameraPreview(controller)
-      );
-    }
+          CameraPreview(controller));}
     widgets.add(GestureDetector(
       onScaleStart: (ScaleStartDetails details){
         print("Start");
-        firstUpdate = true;
-      },
+        firstUpdate = true;},
       onScaleEnd: (ScaleEndDetails details){
         print("End");
-        oldScale = scale;
-      },
+        oldScale = scale;},
       onScaleUpdate: (ScaleUpdateDetails details){
         if(firstUpdate){
           firstScale = details.scale;
-          firstUpdate = false;
-        }
+          firstUpdate = false;}
         var futureScale = ((details.scale/firstScale) - 1) + oldScale;
         //var futureScale = (details.scale + oldScale - 1;
         if (futureScale <= 1.786 && futureScale > 0.1) {
           setState(() {
-            scale = futureScale;
-          });
-        }
-      },
+            scale = futureScale;});}},
       onTap: ()=>print("TAP"),
       behavior: HitTestBehavior.translucent,
       child: Center(
         child: CustomPaint(
-          painter: CirclePainter(widget.numberParts, scale),
-        ),
-      ),
-    ));
+          painter: CirclePainter(widget.numberParts, scale),),),));
     return AspectRatio(
       aspectRatio: controller.value.aspectRatio,
       child: Stack(
           children: widgets,
-          fit: StackFit.expand),
-    );
-  }
+          fit: StackFit.expand),);}
   Future<void> freezeFrame(int id) async{
     print(tempPath);
     try{
       print(tempPath + "/"  + id.toString());
       await controller.takePicture(tempPath + "/" + id.toString());
     }catch(e){
-      print(e);
-    }
-  }
-}
+      print(e);}}}
 class CirclePainter extends CustomPainter{
   var numberParts;
   double radius = 150;
@@ -219,15 +167,10 @@ class CirclePainter extends CustomPainter{
     canvas.drawCircle(Offset.zero, radius * scale, paint);
     canvas.drawCircle(Offset.zero, radius * scale + 4.5, paintBorder);
     for (var i = 0; i<numberParts; i++){
-      canvas.drawLine(Offset.zero, Offset.fromDirection((((i+1)/numberParts)*2*pi) - (1/2)*pi,radius*scale), paint);
-    }
-  }
+      canvas.drawLine(Offset.zero, Offset.fromDirection((((i+1)/numberParts)*2*pi) - (1/2)*pi,radius*scale), paint);}}
   @override
-  bool shouldRepaint(CustomPainter oldDelegate ) {
-    return true;
-  }
-  CirclePainter(this.numberParts, [this.scale]);
-}
+  bool shouldRepaint(CustomPainter oldDelegate ) {return true;}
+  CirclePainter(this.numberParts, [this.scale]);}
 class SliderContainer extends StatelessWidget{
   final Function(double value) onNumberPartsChanged;
   final double value;
@@ -237,12 +180,8 @@ class SliderContainer extends StatelessWidget{
     return Slider(
       value: value,
       onChanged: (change){
-        onNumberPartsChanged(change);
-      },
+        onNumberPartsChanged(change);},
       min: 2,
       max: 15,
       divisions: 13,
-      label: value.toInt().toString(),
-    );
-  }
-}
+      label: value.toInt().toString(),);}}
