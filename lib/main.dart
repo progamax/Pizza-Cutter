@@ -224,11 +224,7 @@ class CirclePainter extends CustomPainter{
   }
   @override
   bool shouldRepaint(CustomPainter oldDelegate ) {
-    if(scale != 1.0){
-      return true;
-    }else{
-      return false;
-    }
+    return true;
   }
   CirclePainter(this.numberParts, [this.scale]);
 }
