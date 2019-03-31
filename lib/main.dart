@@ -25,8 +25,8 @@ class MyAppState extends State<MyApp> {
     var value=numberParts.toDouble();
     return MaterialApp(
       title:'PizzaCutter',
-      theme:ThemeData(primarySwatch:Colors.red,),
-      home:Scaffold(appBar:AppBar(title:Text("PizzaCutter"),),
+      theme:ThemeData(primarySwatch:Colors.red),
+      home:Scaffold(appBar:AppBar(title:Text("PizzaCutter")),
         body:Align(
           alignment:Alignment.topCenter,
           child:Container(
@@ -42,7 +42,7 @@ class MyAppState extends State<MyApp> {
                         child:IconButton(
                             iconSize:124.0,
                             onPressed:(){setState((){frozen=!frozen;});},
-                            icon:Icon(Icons.pause)),)))],),),)));}}
+                            icon:Icon(Icons.pause)))))])))));}}
 class Camera extends StatefulWidget{
   final int numberParts;
   final bool frozen;
@@ -87,7 +87,7 @@ class _Camera extends State<Camera>{
                 return Image.file(File(tempPath+"/"+id.toString()));
               }else{
                 return Center(
-                  child: CircularProgressIndicator(),);}}));
+                  child: CircularProgressIndicator());}}));
       }else{
         widgets.add(
             CameraPreview(controller));}
@@ -104,10 +104,10 @@ class _Camera extends State<Camera>{
         behavior:HitTestBehavior.translucent,
         child:Center(
           child:CustomPaint(
-            painter:CirclePainter(widget.numberParts,scale),),),));
+            painter:CirclePainter(widget.numberParts,scale)))));
       return AspectRatio(
         aspectRatio:controller.value.aspectRatio,
-        child:Stack(children:widgets, fit:StackFit.expand),);}}
+        child:Stack(children:widgets,fit:StackFit.expand),);}}
 class CirclePainter extends CustomPainter{
   var numberParts;
   double radius=150;
