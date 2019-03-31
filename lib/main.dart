@@ -34,7 +34,7 @@ class MyAppState extends State<MyApp> {
           alignment:Alignment.topCenter,
           child:Container(
             child:Column(children:<Widget>[
-              CameraWidget(numberParts,frozen),
+              Camera(numberParts,frozen),
               Slider(value:value,onChanged:(change){setState((){numberParts=change.toInt();});},min:2,max:15,divisions:13,label:value.toString()),
               Expanded(
                   child:Align(
@@ -47,13 +47,13 @@ class MyAppState extends State<MyApp> {
                             iconSize:124.0,
                             onPressed:(){setState((){frozen=!frozen;});},
                             icon:Icon(Icons.pause)),)))],),),)));}}
-class CameraWidget extends StatefulWidget{
+class Camera extends StatefulWidget{
   final int numberParts;
   final bool frozen;
-  CameraWidget(this.numberParts,this.frozen);
+  Camera(this.numberParts,this.frozen);
   @override
-  _CameraWidgetState createState()=>_CameraWidgetState();}
-class _CameraWidgetState extends State<CameraWidget>{
+  _Camera createState()=>_Camera();}
+class _Camera extends State<Camera>{
   CameraController controller;
   double scale=1.0;
   var oldScale=1.0;
@@ -76,7 +76,7 @@ class _CameraWidgetState extends State<CameraWidget>{
     controller?.dispose();
     super.dispose();}
   @override
-  void didUpdateWidget(CameraWidget oldWidget){
+  void didUpdateWidget(Camera oldWidget){
     super.didUpdateWidget(oldWidget);
     if(oldWidget.frozen&&!widget.frozen){setState((){id=(Random().nextDouble()*10000).toInt();});}}
     @override
