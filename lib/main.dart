@@ -32,17 +32,19 @@ class MyAppState extends State<MyApp> {
           child:Container(
             child:Column(children:<Widget>[
               Camera(nbPart,frozen),
-              Slider(value:value,onChanged:(change){setState((){nbPart=change.toInt();});},min:2,max:16,divisions:14,label:nbPart.toString()),
+              Slider(value:value,onChanged:(change){setState((){nbPart=change.toInt();});},min:2,max:20,divisions:18,label:nbPart.toString()),
               Expanded(child:Align(
                       alignment:Alignment.center,
                       child:InkResponse(
                         highlightShape:BoxShape.circle,
                         highlightColor:Colors.transparent,
-                        radius:120.0/2,
-                        child:IconButton(
-                            iconSize:124.0,
-                            onPressed:(){setState((){frozen=!frozen;});},
-                            icon:Icon(Icons.pause)))))])))));}}
+                        radius:120,
+                        child:LayoutBuilder(builder: (c,cnstrt) => IconButton(
+                              iconSize:cnstrt.biggest.height*0.85,
+                              onPressed:(){setState((){frozen=!frozen;});},
+                              icon:Icon(frozen?Icons.play_arrow:Icons.pause)),
+                        )))),
+              Text("Tip : Pinch the circle to scale it")])))));}}
 class Camera extends StatefulWidget{
   final int numberParts;
   final bool frozen;
@@ -52,7 +54,7 @@ class Camera extends StatefulWidget{
 class _Camera extends State<Camera>{
   CameraController controller;
   double scl=1.0;
-  var oldScl;
+  double oldScl;
   bool frstUpd=false;
   double frstScl;
   CameraImage lastImage;
@@ -88,9 +90,7 @@ class _Camera extends State<Camera>{
               }else{
                 return Center(
                   child: CircularProgressIndicator());}}));
-      }else{
-        widgets.add(
-            CameraPreview(controller));}
+      }else{widgets.add(CameraPreview(controller));}
       widgets.add(GestureDetector(
         onScaleStart:(ScaleStartDetails details)=>frstUpd=true,
         onScaleEnd:(ScaleEndDetails details)=>oldScl=scl,
@@ -105,7 +105,7 @@ class _Camera extends State<Camera>{
           child:CustomPaint(
             painter:CrlcPaint(widget.numberParts,scl)))));
       return AspectRatio(
-        aspectRatio:controller.value.aspectRatio,
+        aspectRatio:3/4,
         child:Stack(children:widgets,fit:StackFit.expand),);}}
 class CrlcPaint extends CustomPainter{
   var numberParts;
