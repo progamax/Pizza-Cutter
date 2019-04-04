@@ -42,6 +42,8 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSCameraUsageDescription</key>
-    <string>To see how to cut</string>
+    <string>Camera Needed</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Camera Needed</string>
 </dict>
 </plist>

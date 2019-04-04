@@ -31,9 +31,9 @@ class MyAppState extends State<MyApp> {
           alignment:Alignment.topCenter,
           child:Container(
             child:Column(children:<Widget>[
-              Camera(nbPart,frozen),
+              Flexible(flex:4,child: Camera(nbPart,frozen)),
               Slider(value:value,onChanged:(change){setState((){nbPart=change.toInt();});},min:2,max:20,divisions:18,label:nbPart.toString()),
-              Expanded(child:Align(
+              Expanded(flex:1,child:Align(
                       alignment:Alignment.center,
                       child:InkResponse(
                         child:LayoutBuilder(builder: (c,cnstr) => IconButton(
