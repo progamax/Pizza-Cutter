@@ -25,7 +25,7 @@ class MyAppState extends State<MyApp> {
     var value=nbPart.toDouble();
     return MaterialApp(
       title:'PizzaCutter',
-      theme:ThemeData(primarySwatch:Colors.red),
+      theme:ThemeData(brightness:Brightness.dark,primaryColor:Colors.red),
       home:Scaffold(appBar:AppBar(title:Text("Pizza Cutter")),
         body:Align(
           alignment:Alignment.topCenter,
@@ -36,29 +36,25 @@ class MyAppState extends State<MyApp> {
               Expanded(child:Align(
                       alignment:Alignment.center,
                       child:InkResponse(
-                        highlightShape:BoxShape.circle,
-                        highlightColor:Colors.transparent,
-                        radius:120,
-                        child:LayoutBuilder(builder: (c,cnstrt) => IconButton(
-                              iconSize:cnstrt.biggest.height*0.85,
+                        child:LayoutBuilder(builder: (c,cnstr) => IconButton(
+                              iconSize:cnstr.biggest.height*.85,
                               onPressed:(){setState((){frozen=!frozen;});},
                               icon:Icon(frozen?Icons.play_arrow:Icons.pause)),
                         )))),
-              Padding(padding: const EdgeInsets.all(8),child: Text("Tip : Pinch the circle to scale it"),
-              )])))));}}
+              Padding(padding:EdgeInsets.all(8),child: Text("Tip : Pinch the circle to scale it"),)])))));}}
 class Camera extends StatefulWidget{
-  final int numberParts;
+  final int nbParts;
   final bool frozen;
-  Camera(this.numberParts,this.frozen);
+  Camera(this.nbParts,this.frozen);
   @override
   _Camera createState()=>_Camera();}
 class _Camera extends State<Camera>{
   CameraController controller;
-  double scl=1.0;
+  double scl=1;
   double oldScl;
   bool frstUpd=false;
   double frstScl;
-  CameraImage lastImage;
+  CameraImage lastImg;
   int id;
   Future<void> freezeFrame(int id)async=>await controller.takePicture(tempPath+"/"+id.toString());
   @override
@@ -88,8 +84,7 @@ class _Camera extends State<Camera>{
             builder:(context,snapshot){
               if(File(tempPath+"/"+id.toString()).existsSync()){
                 return Image.file(File(tempPath+"/"+id.toString()));
-              }else{
-                return Center(
+              }else{return Center(
                   child: CircularProgressIndicator());}}));
       }else{widgets.add(CameraPreview(controller));}
       widgets.add(GestureDetector(
@@ -104,7 +99,7 @@ class _Camera extends State<Camera>{
         behavior:HitTestBehavior.translucent,
         child:Center(
           child:CustomPaint(
-            painter:CrlcPaint(widget.numberParts,scl)))));
+            painter:CrlcPaint(widget.nbParts,scl)))));
       return AspectRatio(
         aspectRatio:3/4,
         child:Stack(children:widgets,fit:StackFit.expand),);}}
