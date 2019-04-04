@@ -26,7 +26,7 @@ class MyAppState extends State<MyApp> {
     return MaterialApp(
       title:'PizzaCutter',
       theme:ThemeData(primarySwatch:Colors.red),
-      home:Scaffold(appBar:AppBar(title:Text("PizzaCutter")),
+      home:Scaffold(appBar:AppBar(title:Text("Pizza Cutter")),
         body:Align(
           alignment:Alignment.topCenter,
           child:Container(
@@ -44,7 +44,8 @@ class MyAppState extends State<MyApp> {
                               onPressed:(){setState((){frozen=!frozen;});},
                               icon:Icon(frozen?Icons.play_arrow:Icons.pause)),
                         )))),
-              Text("Tip : Pinch the circle to scale it")])))));}}
+              Padding(padding: const EdgeInsets.all(8),child: Text("Tip : Pinch the circle to scale it"),
+              )])))));}}
 class Camera extends StatefulWidget{
   final int numberParts;
   final bool frozen;
