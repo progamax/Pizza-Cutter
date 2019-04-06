@@ -4,14 +4,11 @@ import 'dart:math';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import "package:path_provider/path_provider.dart";
 List<CameraDescription> cameras;
-Directory tempDir;
-String tempPath;
+String path;
 Future<void> main() async{
-  cameras = await availableCameras();
-  tempDir = await getTemporaryDirectory();
-  tempPath = tempDir.path;
+  cameras=await availableCameras();
+  path=Directory.systemTemp.path;
   runApp(MyApp());}
 class MyApp extends StatefulWidget {
   @override
@@ -39,8 +36,7 @@ class MyAppState extends State<MyApp> {
                         child:LayoutBuilder(builder: (c,cnstr) => IconButton(
                               iconSize:cnstr.biggest.height*.85,
                               onPressed:(){setState((){frozen=!frozen;});},
-                              icon:Icon(frozen?Icons.play_arrow:Icons.pause)),
-                        )))),
+                              icon:Icon(frozen?Icons.play_arrow:Icons.pause)),)))),
               Padding(padding:EdgeInsets.all(8),child: Text("Tip : Pinch the circle to scale it"),)])))));}}
 class Camera extends StatefulWidget{
   final int nbParts;
@@ -53,10 +49,10 @@ class _Camera extends State<Camera>{
   double scl=1;
   double oldScl;
   bool frstUpd=false;
-  double frstScl;
+  double frstScl=1.0;
   CameraImage lastImg;
   int id;
-  Future<void> freezeFrame(int id)async=>await controller.takePicture(tempPath+"/"+id.toString());
+  Future<void> freezeFrame(int id)async=>await controller.takePicture(path+"/"+id.toString());
   @override
   void initState(){
     super.initState();
@@ -82,11 +78,12 @@ class _Camera extends State<Camera>{
         widgets.add(FutureBuilder(
             future:freezeFrame(id),
             builder:(context,snapshot){
-              if(File(tempPath+"/"+id.toString()).existsSync()){
-                return Image.file(File(tempPath+"/"+id.toString()));
+              if(File(path+"/"+id.toString()).existsSync()){
+                return Image.file(File(path+"/"+id.toString()));
               }else{return Center(
                   child: CircularProgressIndicator());}}));
-      }else{widgets.add(CameraPreview(controller));}
+      }else{widgets.add(CameraPreview(controller));
+      Directory(path).listSync().forEach((e){if(e is File)e.deleteSync();});}
       widgets.add(GestureDetector(
         onScaleStart:(ScaleStartDetails details)=>frstUpd=true,
         onScaleEnd:(ScaleEndDetails details)=>oldScl=scl,
@@ -94,7 +91,7 @@ class _Camera extends State<Camera>{
           if(frstUpd){
             frstScl=details.scale;
             frstUpd=false;}
-          var futureScale=(((details.scale/frstScl)-1)+oldScl);
+          var futureScale=((details.scale/frstScl)-1.0)+oldScl;
           if(futureScale<=1.78&&futureScale>.1){setState(()=>scl=futureScale);}},
         behavior:HitTestBehavior.translucent,
         child:Center(
