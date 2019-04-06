@@ -4,11 +4,12 @@ import 'dart:math';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:path_provider/path_provider.dart';
 List<CameraDescription> cameras;
 String path;
 Future<void> main() async{
   cameras=await availableCameras();
-  path=Directory.systemTemp.path;
+  path=(await getTemporaryDirectory()).path;
   runApp(MyApp());}
 class MyApp extends StatefulWidget {
   @override
@@ -47,9 +48,9 @@ class Camera extends StatefulWidget{
 class _Camera extends State<Camera>{
   CameraController controller;
   double scl=1;
-  double oldScl;
+  double oldScl=1.0;
   bool frstUpd=false;
-  double frstScl=1.0;
+  double frstScl;
   CameraImage lastImg;
   int id;
   Future<void> freezeFrame(int id)async=>await controller.takePicture(path+"/"+id.toString());
