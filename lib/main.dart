@@ -94,7 +94,7 @@ class _Camera extends State<Camera>{
           if(frstUpd){
             frstScl=details.scale;
             frstUpd=false;}
-          var futureScale=((details.scale/frstScl)-1)+oldScl;
+          var futureScale=(((details.scale/frstScl)-1)+oldScl);
           if(futureScale<=1.78&&futureScale>.1){setState(()=>scl=futureScale);}},
         behavior:HitTestBehavior.translucent,
         child:Center(
